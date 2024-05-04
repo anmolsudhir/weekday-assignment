@@ -1,12 +1,15 @@
-import { Avatar, Box, Button, Card, CardContent, Paper, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, Card, CardContent, Paper, Stack, Typography, useTheme } from "@mui/material"
 
 function JobCard() {
   return (
-    <Card elevation={1} sx={{
-      borderRadius: '20px',
-      boxShadow: 'rgba(0, 0, 0, 0.25) 0px 1px 4px 0px',
-      padding: '8px'
-    }}>
+    <Card
+      elevation={1}
+      sx={{
+        borderRadius: '20px',
+        boxShadow: 'rgba(0, 0, 0, 0.25) 0px 1px 4px 0px',
+        padding: '8px',
+      }}
+    >
       <CardContent>
         <JobCardChip />
         <JobCardHeader />
@@ -59,12 +62,13 @@ function JobCardBody() {
       <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
         Estimated Salary: ₹30 - 50 LPA ✅
       </Typography>
-      <Typography variant="h5">
+      <Typography variant="h6">
         About Comapny:
       </Typography>
       <Box
         position={'relative'}
-        height={'250px'}
+        height={'fit-content'}
+        maxHeight={'250px'}
       >
         <Box
           sx={{
@@ -105,31 +109,23 @@ function JobCardBody() {
 }
 
 function JobCardActions() {
+  const theme = useTheme()
   return (
     <Box gap={1} display={'flex'} flexDirection={'column'} margin={0} padding={0} marginTop={1}>
       <Button
-        sx={{
-          borderRadius: "8px",
-          backgroundColor: "rgb(85, 239, 196)",
-          color: "black",
-          fontSize: '16px',
-          boxShadow: "none"
-        }}
+        sx={{ backgroundColor: theme.palette.primary.main }}
         size="large"
         variant="contained"
+        color="primary"
         fullWidth
       >
         ⚡&nbsp;Easy Apply
       </Button>
       <Button
-        sx={{
-          borderRadius: "8px",
-          backgroundColor: "rgb(73, 67, 218)",
-          fontWeight: 200,
-          boxShadow: "none"
-        }}
+        sx={{ backgroundColor: theme.palette.secondary.main }}
         size="large"
         variant="contained"
+        color="secondary"
         fullWidth
       >
         Unlock Referals Asks

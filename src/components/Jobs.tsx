@@ -1,19 +1,19 @@
-import { Grid } from "@mui/material"
+import { Box, Grid } from "@mui/material"
 import JobCard from "./JobCard"
 
 function Jobs() {
   return (
-    <Grid container spacing={{ xs: 3 }}>
-      <Grid item xs={12} md={6} lg={4}>
-        <JobCard />
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={3}>
+        {
+          Array.from({ length: 12 }).map((elem) => (
+            <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }} item xs={12} md={6} lg={4}>
+              <JobCard />
+            </Grid>
+          ))
+        }
       </Grid>
-      <Grid item xs={12} md={6} lg={4}>
-        <JobCard />
-      </Grid>
-      <Grid item xs={12} md={6} lg={4}>
-        <JobCard />
-      </Grid>
-    </Grid>
+    </Box>
   )
 }
 
