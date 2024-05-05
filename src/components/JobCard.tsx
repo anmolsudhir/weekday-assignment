@@ -1,6 +1,21 @@
 import { Avatar, Box, Button, Card, CardContent, Paper, Stack, Typography, useTheme } from "@mui/material"
 
-function JobCard() {
+export type JobCardPropType = {
+  jdUid: string | null,
+  jdLink: string | null,
+  jobDetailsFromCompany: string | null,
+  maxJdSalary: number | null,
+  minJdSalary: number | null,
+  salaryCurrencyCode: string | null,
+  location: string | null,
+  minExp: number | null,
+  maxExp: number | null,
+  jobRole: string | null,
+  companyName: string | null,
+  logoUrl: string | null
+}
+
+function JobCard(jobData: JobCardPropType) {
   return (
     <Card
       elevation={1}
@@ -8,12 +23,25 @@ function JobCard() {
         borderRadius: '20px',
         boxShadow: 'rgba(0, 0, 0, 0.25) 0px 1px 4px 0px',
         padding: '8px',
+        maxWidth: '480px',
+        height: '100%'
       }}
     >
       <CardContent>
         <JobCardChip />
-        <JobCardHeader />
-        <JobCardBody />
+        <JobCardHeader
+          companyName={jobData.companyName}
+          logoUrl={jobData.logoUrl}
+          jobRole={jobData.jobRole}
+          location={jobData.location}
+        />
+        <JobCardBody
+          jobDetailsFromCompany={jobData.jobDetailsFromCompany}
+          minJdSalary={jobData.minJdSalary}
+          maxJdSalary={jobData.maxJdSalary}
+          minExp={jobData.minExp}
+          salaryCurrencyCode={jobData.salaryCurrencyCode}
+        />
         <JobCardActions />
       </CardContent>
     </Card>
@@ -37,30 +65,52 @@ function JobCardChip() {
   )
 }
 
-function JobCardHeader() {
+function JobCardHeader({
+  companyName,
+  logoUrl,
+  jobRole,
+  location
+}: Partial<JobCardPropType>) {
   return (
     <Box sx={{ display: "flex", flexDirection: "row", gap: "12px", alignItems: "start" }}>
-      <Avatar variant="rounded" src="" alt="" sizes="" />
+      <Avatar variant="rounded" src={logoUrl as string} alt={companyName as string} />
       <Stack spacing={0.25}>
         <Typography variant="h3" sx={{ fontSize: 13, letterSpacing: "1px" }} color="text.secondary">
-          Company Name
+          {companyName}
         </Typography>
         <Typography variant="body2">
-          Role
+          {jobRole}
         </Typography>
         <Typography variant="caption">
-          India
+          {location}
         </Typography>
       </Stack>
     </Box>
   )
 }
 
-function JobCardBody() {
+function JobCardBody({
+  jobDetailsFromCompany,
+  minJdSalary,
+  maxJdSalary,
+  minExp,
+  salaryCurrencyCode
+}: Partial<JobCardPropType>
+) {
   return (
-    <>
+    <Box>
       <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-        Estimated Salary: ₹30 - 50 LPA ✅
+        {
+          `Estimated Salary: ${salaryCurrencyCode === 'USD'
+            ? '$'
+            : '₹'
+          }
+          ${minJdSalary} - ${maxJdSalary}
+          ${salaryCurrencyCode === 'USD'
+            ? 'K'
+            : 'LPA'
+          } ✅`
+        }
       </Typography>
       <Typography variant="h6">
         About Comapny:
@@ -69,6 +119,7 @@ function JobCardBody() {
         position={'relative'}
         height={'fit-content'}
         maxHeight={'250px'}
+        overflow={'hidden'}
       >
         <Box
           sx={{
@@ -90,21 +141,24 @@ function JobCardBody() {
         <Stack>
           <Typography variant="body1">About Us</Typography>
           <Typography variant="body2">
-            Firefly is a Cloud Asset Management solution that enables DevOps, SRE, and Cloud Platform teams to rediscover their entire cloud footprint, understand which parts of it are codified vs unmanaged, detect drifts to prevent service failures, classify assets using Policy-as-Code, and manage a single inventory of all their cloud resources across Multi-Cloud, and Kubernetes clusters.
+            {jobDetailsFromCompany}
           </Typography>
         </Stack>
       </Box>
-      <Box sx={{
-        margin: "12px 0",
-      }}>
-        <Typography variant="h3" sx={{ fontSize: 13, letterSpacing: "1px" }} color="text.secondary">
-          Minimum Experience
-        </Typography>
-        <Typography variant="body1">
-          3 Years
-        </Typography>
-      </Box>
-    </>
+      {minExp
+        ? <Box sx={{
+          margin: "12px 0",
+        }}>
+          <Typography variant="h3" sx={{ fontSize: 13, letterSpacing: "1px" }} color="text.secondary">
+            Minimum Experience
+          </Typography>
+          <Typography variant="body1">
+            {minExp} Years
+          </Typography>
+        </Box>
+        : null
+      }
+    </Box>
   )
 }
 
@@ -113,7 +167,11 @@ function JobCardActions() {
   return (
     <Box gap={1} display={'flex'} flexDirection={'column'} margin={0} padding={0} marginTop={1}>
       <Button
-        sx={{ backgroundColor: theme.palette.primary.main }}
+        sx={{
+          "&:hover": {
+            backgroundColor: theme.palette.primary.main
+          }
+        }}
         size="large"
         variant="contained"
         color="primary"
@@ -122,7 +180,11 @@ function JobCardActions() {
         ⚡&nbsp;Easy Apply
       </Button>
       <Button
-        sx={{ backgroundColor: theme.palette.secondary.main }}
+        sx={{
+          "&:hover": {
+            backgroundColor: theme.palette.secondary.main
+          }
+        }}
         size="large"
         variant="contained"
         color="secondary"
