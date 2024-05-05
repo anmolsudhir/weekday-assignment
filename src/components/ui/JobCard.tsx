@@ -1,19 +1,17 @@
-import { Avatar, Box, Button, Card, CardContent, Paper, Stack, Typography, useTheme } from "@mui/material"
+import { JobCardPropType } from "@/lib/types"
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Paper,
+  Stack,
+  Typography,
+  useTheme
+} from "@mui/material"
+import { capitalizeFirstLetter } from "@/lib"
 
-export type JobCardPropType = {
-  jdUid: string | null,
-  jdLink: string | null,
-  jobDetailsFromCompany: string | null,
-  maxJdSalary: number | null,
-  minJdSalary: number | null,
-  salaryCurrencyCode: string | null,
-  location: string | null,
-  minExp: number | null,
-  maxExp: number | null,
-  jobRole: string | null,
-  companyName: string | null,
-  logoUrl: string | null
-}
 
 function JobCard(jobData: JobCardPropType) {
   return (
@@ -24,7 +22,7 @@ function JobCard(jobData: JobCardPropType) {
         boxShadow: 'rgba(0, 0, 0, 0.25) 0px 1px 4px 0px',
         padding: '8px',
         maxWidth: '480px',
-        height: '100%'
+        height: '97.5%'
       }}
     >
       <CardContent>
@@ -73,16 +71,18 @@ function JobCardHeader({
 }: Partial<JobCardPropType>) {
   return (
     <Box sx={{ display: "flex", flexDirection: "row", gap: "12px", alignItems: "start" }}>
-      <Avatar variant="rounded" src={logoUrl as string} alt={companyName as string} />
+      <Avatar variant="rounded" src={logoUrl as string} alt={companyName as string} >
+        {companyName?.charAt(0)?.toUpperCase() || 'C'}
+      </Avatar>
       <Stack spacing={0.25}>
         <Typography variant="h3" sx={{ fontSize: 13, letterSpacing: "1px" }} color="text.secondary">
           {companyName}
         </Typography>
         <Typography variant="body2">
-          {jobRole}
+          {capitalizeFirstLetter(jobRole)}
         </Typography>
         <Typography variant="caption">
-          {location}
+          {capitalizeFirstLetter(location)}
         </Typography>
       </Stack>
     </Box>
@@ -145,19 +145,19 @@ function JobCardBody({
           </Typography>
         </Stack>
       </Box>
-      {minExp
-        ? <Box sx={{
-          margin: "12px 0",
-        }}>
-          <Typography variant="h3" sx={{ fontSize: 13, letterSpacing: "1px" }} color="text.secondary">
-            Minimum Experience
-          </Typography>
-          <Typography variant="body1">
-            {minExp} Years
-          </Typography>
-        </Box>
-        : null
-      }
+      <Box sx={{
+        margin: "12px 0",
+      }}>
+        <Typography variant="h3" sx={{ fontSize: 13, letterSpacing: "1px" }} color="text.secondary">
+          Minimum Experience
+        </Typography>
+        <Typography variant="body1">
+          {minExp
+            ? `${minExp} Years`
+            : 'Not provided'
+          }
+        </Typography>
+      </Box>
     </Box>
   )
 }
@@ -165,7 +165,7 @@ function JobCardBody({
 function JobCardActions() {
   const theme = useTheme()
   return (
-    <Box gap={1} display={'flex'} flexDirection={'column'} margin={0} padding={0} marginTop={1}>
+    <Stack spacing={1}>
       <Button
         sx={{
           "&:hover": {
@@ -192,7 +192,7 @@ function JobCardActions() {
       >
         Unlock Referals Asks
       </Button>
-    </Box>
+    </Stack>
   )
 }
 
