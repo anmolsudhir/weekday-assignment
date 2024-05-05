@@ -1,5 +1,5 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React from 'react';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React from "react";
 
 const theme = createTheme({
   palette: {
@@ -19,53 +19,44 @@ const theme = createTheme({
           },
           borderRadius: "8px",
           textTransform: "none",
-          boxShadow: "none"
-        }
-      }
+          boxShadow: "none",
+        },
+      },
     },
     MuiCard: {
       styleOverrides: {
         root: {
           "&:hover": {
-            transform: 'scale(101%)'
+            transform: "scale(101%)",
           },
-          transition: "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)"
+          transition: "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)",
         },
-      }
+      },
     },
     MuiSkeleton: {
       styleOverrides: {
         rounded: {
-          borderRadius: "20px"
-        }
-      }
-    }
+          borderRadius: "20px",
+        },
+      },
+    },
   },
   typography: {
+    fontFamily: "Lexend, sans-serif",
     button: {
-      color: 'black',
-      '&.MuiButton-primary': {
-        color: 'black',
+      color: "black",
+      "&.MuiButton-primary": {
+        color: "black",
       },
-      '&.MuiButton-secondary': {
-        color: 'white',
+      "&.MuiButton-secondary": {
+        color: "white",
       },
-    }
-  }
+    },
+  },
 });
 
-function CustomThemeProvider(
-  {
-    children
-  }: {
-    children: React.JSX.Element
-  }
-) {
-  return (
-    <ThemeProvider theme={theme}>
-      {children}
-    </ThemeProvider>
-  );
+function CustomThemeProvider({ children }: { children: React.JSX.Element }) {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 
-export default CustomThemeProvider
+export default CustomThemeProvider;
