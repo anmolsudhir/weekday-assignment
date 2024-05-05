@@ -87,7 +87,6 @@ function Jobs() {
           <Grid
             sx={{
               display: "flex",
-              flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
             }}

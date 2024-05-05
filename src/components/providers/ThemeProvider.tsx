@@ -20,6 +20,8 @@ const theme = createTheme({
           borderRadius: "8px",
           textTransform: "none",
           boxShadow: "none",
+          fontSize: "16px",
+          fontWeight: 350,
         },
       },
     },
