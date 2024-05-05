@@ -14,7 +14,7 @@ function JobCardChip() {
       }}
     >
       <Typography variant="body1" sx={{ fontSize: 10 }} fontWeight={300}>
-        ⏳ Posted 25 days ago
+        ⏳ Posted Recently
       </Typography>
     </Paper>
   );

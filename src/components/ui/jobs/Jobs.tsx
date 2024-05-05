@@ -1,19 +1,28 @@
 import { JobCardSkeleton } from "@/components";
 import { Job } from "@/lib";
-import { useGetJobsQuery } from "@/lib/redux/query";
+import {
+  jobsSlice,
+  useAppDispatch,
+  useAppSelector,
+  useGetJobsQuery,
+} from "@/redux";
 import { Box, Grid } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import JobCard from "./JobCard";
 
 function Jobs() {
   const LIMIT = 12;
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const jobs = useAppSelector((state) => state.jobs.jobs);
+  const dispatch = useAppDispatch();
   const [offset, setCurrentOffset] = useState<number>(0);
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const { data, isLoading } = useGetJobsQuery({
-    offset,
-    limit: LIMIT,
-  });
+  const { data, isLoading } = useGetJobsQuery(
+    {
+      offset,
+      limit: LIMIT,
+    },
+    { refetchOnMountOrArgChange: true },
+  );
 
   const handleIntersection = (e: IntersectionObserverEntry[]) => {
     const { target } = e[0];
@@ -27,8 +36,9 @@ function Jobs() {
 
   useEffect(() => {
     if (data) {
-      setJobs((prevJobs) => [...prevJobs, ...data]);
+      dispatch(jobsSlice.actions.setJobs([...jobs, ...data.jdList]));
     }
+    // eslint-disable-next-line
   }, [data]);
 
   useEffect(() => {
