@@ -1,4 +1,4 @@
-import { JobCardPropType } from "@/lib/types";
+import { Job } from "@/lib";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 
 function JobCardBody({
@@ -7,7 +7,7 @@ function JobCardBody({
   maxJdSalary,
   minExp,
   salaryCurrencyCode,
-}: Partial<JobCardPropType>) {
+}: Partial<Job>) {
   const getSalaryDetail = (
     min: number | null | undefined,
     max: number | null | undefined,
@@ -88,7 +88,8 @@ function JobCardBody({
       <Stack margin={"12px 0"} spacing={0.75}>
         <Typography
           variant="h3"
-          sx={{ fontSize: 13, letterSpacing: "1px" }}
+          fontSize={13}
+          letterSpacing={"1px"}
           color="text.secondary"
         >
           Minimum Experience

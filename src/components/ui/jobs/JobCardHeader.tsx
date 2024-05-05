@@ -1,13 +1,14 @@
 import { capitalizeFirstLetter } from "@/lib";
-import { JobCardPropType } from "@/lib/types";
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Job } from "@/lib";
+import { Avatar, Box, Stack, Typography, Link } from "@mui/material";
 
 function JobCardHeader({
   companyName,
   logoUrl,
   jobRole,
   location,
-}: Partial<JobCardPropType>) {
+  jdLink,
+}: Partial<Job>) {
   return (
     <Box
       sx={{
@@ -25,14 +26,25 @@ function JobCardHeader({
         {companyName?.charAt(0)?.toUpperCase() || "C"}
       </Avatar>
       <Stack spacing={0.25}>
-        <Typography
-          variant="h3"
-          fontSize={14}
-          letterSpacing={"1px"}
+        <Link
+          href={jdLink || "#"}
           color="text.secondary"
+          sx={{
+            textDecoration: "none",
+            "&:hover": {
+              textDecoration: "underline",
+            },
+          }}
         >
-          {companyName}
-        </Typography>
+          <Typography
+            variant="h3"
+            fontSize={14}
+            letterSpacing={"1px"}
+            color="text.secondary"
+          >
+            {companyName}
+          </Typography>
+        </Link>
         <Typography variant="body2" fontWeight={300}>
           {capitalizeFirstLetter(jobRole) || "-"}
         </Typography>

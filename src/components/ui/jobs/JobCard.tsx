@@ -1,21 +1,13 @@
-import { JobCardPropType } from "@/lib/types";
+import { Job } from "@/lib";
 import { Card, CardContent } from "@mui/material";
 import JobCardChip from "./JobCardChip";
 import JobCardBody from "./JobCardBody";
 import JobCardHeader from "./JobCardHeader";
 import JobCardActions from "./JobCardActions";
 
-function JobCard(jobData: JobCardPropType) {
+function JobCard(jobData: Job) {
   return (
-    <Card
-      elevation={1}
-      sx={{
-        borderRadius: "20px",
-        boxShadow: "rgba(0, 0, 0, 0.25) 0px 1px 4px 0px",
-        padding: "4px",
-        maxWidth: "480px",
-      }}
-    >
+    <Card elevation={1}>
       <CardContent>
         <JobCardChip />
         <JobCardHeader

@@ -1,77 +1,55 @@
 import { JobCardSkeleton } from "@/components";
-import { type JobCardPropType } from "@/lib/types";
+import { Job } from "@/lib";
+import { useGetJobsQuery } from "@/lib/redux/query";
 import { Box, Grid } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import JobCard from "./JobCard";
 
 function Jobs() {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<JobCardPropType[]>([]);
+  const LIMIT = 12;
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [offset, setCurrentOffset] = useState<number>(0);
   const loadMoreRef = useRef<HTMLDivElement>(null);
+  const { data, isLoading } = useGetJobsQuery({
+    offset,
+    limit: LIMIT,
+  });
 
-  const fetchJobs = async () => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const body = JSON.stringify({
-      limit: 12,
-      offset: offset * 12,
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body,
-    };
-
-    fetch(
-      "https://api.weekday.technology/adhoc/getSampleJdJSON",
-      requestOptions,
-    )
-      .then((response) => response.json())
-      .then((result: { jdList: JobCardPropType[] }) => {
-        setData([...data, ...result.jdList]);
-        setLoading(false);
-      })
-      .catch((error) => console.error(error));
+  const handleIntersection = (e: IntersectionObserverEntry[]) => {
+    const { target } = e[0];
+    if (
+      loadMoreRef.current &&
+      target.scrollHeight - target.scrollTop === target.clientHeight
+    ) {
+      setCurrentOffset((prevOffset) => prevOffset + 1);
+    }
   };
 
   useEffect(() => {
-    fetchJobs();
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
+    if (data) {
+      setJobs((prevJobs) => [...prevJobs, ...data]);
+    }
+  }, [data]);
 
   useEffect(() => {
-    setTimeout(() => {
+    const intervalId = setTimeout(() => {
       if (loadMoreRef.current) {
-        const observer = new IntersectionObserver(
-          (e) => {
-            const { target } = e[0];
-            if (
-              loadMoreRef.current &&
-              target.scrollHeight - target.scrollTop === target.clientHeight
-            ) {
-              setCurrentOffset((prevOffset) => prevOffset + 1);
-            }
-          },
-          {
-            threshold: 0.25,
-          },
-        );
+        const observer = new IntersectionObserver(handleIntersection, {
+          threshold: 0.25,
+        });
         observer.observe(loadMoreRef.current);
-
         return () => {
           observer.disconnect();
         };
       }
     }, 1000);
 
-    return () => {};
+    return () => {
+      clearTimeout(intervalId);
+    };
   }, []);
 
-  if (loading)
+  if (isLoading)
     return (
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={4}>
@@ -83,7 +61,7 @@ function Jobs() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4}>
-        {data.map((jobData: JobCardPropType, idx: number) => (
+        {jobs.map((jobData: Job, idx: number) => (
           <Grid
             sx={{
               display: "flex",
