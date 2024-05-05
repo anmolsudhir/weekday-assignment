@@ -47,7 +47,7 @@ const theme = createTheme({
   }
 });
 
-export function CustomThemeProvider(
+function CustomThemeProvider(
   {
     children
   }: {
@@ -60,3 +60,5 @@ export function CustomThemeProvider(
     </ThemeProvider>
   );
 }
+
+export default CustomThemeProvider
