@@ -2,69 +2,12 @@ import {
   useAutocomplete,
   UseAutocompleteProps,
 } from "@mui/base/useAutocomplete";
-import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import { Box, Typography, Stack, Divider } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { autocompleteClasses } from "@mui/material/Autocomplete";
+import { Box, Typography } from "@mui/material";
+import { ReactNode } from "react";
 import { top100Films } from "./Filters";
-import "./AutoComplete.css";
+import { Input, InputActions, InputWrapper } from "./Input";
+import { Listbox } from "./Listbox";
 import Tag from "./Tag";
-
-const Label = styled("label")`
-  padding: 0 0 4px;
-  font-size: 13px;
-  line-height: 0.75;
-  font-weight: 500;
-  display: block;
-`;
-
-const Listbox = styled("ul")(
-  ({ theme }) => `
-  width: 300px;
-  margin: 8px 0 0;
-  padding: 0;
-  position: absolute;
-  list-style: none;
-  background-color: #fff;
-  overflow: auto;
-  max-height: 250px;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 1;
-
-  & li {
-    padding: 5px 12px;
-    display: flex;
-
-    & span {
-      flex-grow: 1;
-    }
-
-    & svg {
-      color: transparent;
-    }
-  }
-
-  & li[aria-selected='true'] {
-    background-color: ${theme.palette.mode === "dark" ? "#2b2b2b" : "#fafafa"};
-    font-weight: 600;
-
-    & svg {
-      color: #1890ff;
-    }
-  }
-
-  & li.${autocompleteClasses.focused} {
-    background-color: ${theme.palette.mode === "dark" ? "#003b57" : "#e6f7ff"};
-    cursor: pointer;
-
-    & svg {
-      color: currentColor;
-    }
-  }
-`,
-);
 
 export default function AutoComplete(
   props: UseAutocompleteProps<
@@ -106,15 +49,11 @@ export default function AutoComplete(
 
   return (
     <Box>
-      <Box {...getRootProps(other)}>
+      <Box {...getRootProps(other)} ref={setAnchorEl}>
         {noOptionSelected && (
           <Label {...getInputLabelProps()}>Customized hook</Label>
         )}
-        <Box
-          component={"div"}
-          ref={setAnchorEl}
-          className={"input-wrapper " + (focused ? "focused" : "")}
-        >
+        <InputWrapper focused={focused}>
           {(value as typeof top100Films)?.map(
             (option: FilmOptionType, index: number) => (
               <Tag
@@ -124,59 +63,42 @@ export default function AutoComplete(
               />
             ),
           )}
-          <input
+          <Input
             disabled={disabled}
             readOnly={readOnly}
             placeholder={!noOptionSelected ? "Label" : ""}
-            {...getInputProps()}
+            getInputProps={getInputProps}
           />
-          <Stack
-            direction={"row"}
-            spacing={1}
-            display={"flex"}
-            alignItems={"center"}
-          >
-            {noOptionSelected && (
-              <button {...getClearProps()} className="clear-btn">
-                <ClearRoundedIcon
-                  fontSize="small"
-                  className={
-                    "autocomplete-icon-svg " + (focused ? "focus" : "")
-                  }
-                />
-              </button>
-            )}
-            <Divider orientation="vertical" flexItem />
-            <Box
-              {...getPopupIndicatorProps()}
-              className={"popup-btn " + (popupOpen ? "popupOpen" : undefined)}
-              component={"button"}
-            >
-              <KeyboardArrowDownRoundedIcon
-                fontSize="small"
-                className={"autocomplete-icon-svg " + (focused ? "focus" : "")}
-              />
-            </Box>
-          </Stack>
-        </Box>
+          <InputActions
+            focused={focused}
+            noOptionSelected={noOptionSelected}
+            popupOpen={popupOpen}
+            getClearProps={getClearProps}
+            getPopupIndicatorProps={getPopupIndicatorProps}
+          />
+        </InputWrapper>
       </Box>
       {groupedOptions.length > 0 ? (
-        <Listbox {...getListboxProps()} className="list-box">
+        <Listbox {...getListboxProps()}>
           {(groupedOptions as typeof top100Films).map((option, index) => (
-            <li
-              {...getOptionProps({ option, index })}
+            <Box
+              component={"li"}
               key={index}
-              style={{ padding: "10px" }}
+              {...getOptionProps({ option, index })}
             >
-              <Typography variant="body2" fontWeight={200}>
+              <Typography my={0.5} variant="body2" fontWeight={200}>
                 {option.title}
               </Typography>
-            </li>
+            </Box>
           ))}
         </Listbox>
       ) : null}
     </Box>
   );
+}
+
+function Label({ children }: { children: ReactNode }) {
+  return <label>{children}</label>;
 }
 
 interface FilmOptionType {

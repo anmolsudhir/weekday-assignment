@@ -1,3 +1,10 @@
+:root {
+    --autocomplete-border-color: #d4d4d4;
+    --autocomplete-focus-border-color: #589af0;
+    --autocomplete-hover-border-color: #ababab;
+    --autocomplete-icon-color: #d4d4d4;
+}
+
 body {
     margin: 24px;
     font-family: "Lexend", sans-serif;

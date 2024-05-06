@@ -1,3 +1,6 @@
+import React, { DetailedHTMLProps, InputHTMLAttributes } from "react";
+import { BoxProps } from "@mui/material";
+
 export interface Job {
   jdUid: string | null;
   jdLink: string | null;
@@ -15,4 +18,26 @@ export interface Job {
 
 export interface OptionsType {
   label: string;
+}
+
+export interface InputWrapperProps extends BoxProps {
+  focused: boolean;
+}
+
+export interface InputProp
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
+  getInputProps: () => React.InputHTMLAttributes<HTMLInputElement> & {
+    ref: React.Ref<HTMLInputElement>;
+  };
+}
+
+export interface InputActionsProps {
+  noOptionSelected: boolean;
+  focused: boolean;
+  popupOpen: boolean;
+  getClearProps: () => React.HTMLAttributes<HTMLButtonElement>;
+  getPopupIndicatorProps: () => React.HTMLAttributes<HTMLButtonElement>;
 }

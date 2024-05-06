@@ -1,4 +1,17 @@
-import { Job } from "./types";
+import {
+  Job,
+  InputProp,
+  InputActionsProps,
+  InputWrapperProps,
+  OptionsType,
+} from "./types";
 import { capitalizeFirstLetter } from "./utils";
 
-export { capitalizeFirstLetter, type Job };
+export { capitalizeFirstLetter };
+export type {
+  Job,
+  InputProp,
+  InputActionsProps,
+  InputWrapperProps,
+  OptionsType,
+};
