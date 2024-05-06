@@ -1,7 +1,7 @@
-import { Box, Stack, Divider } from "@mui/material";
+import { InputActionsProps, InputProp, InputWrapperProps } from "@/lib";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import { InputProp, InputActionsProps, InputWrapperProps } from "@/lib";
+import { Box, Divider, Stack } from "@mui/material";
 import "./css/Input.css";
 
 export function InputWrapper({ focused, children }: InputWrapperProps) {

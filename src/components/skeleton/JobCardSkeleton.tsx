@@ -26,6 +26,9 @@ const JobCardSkeleton = forwardRef(
             animation="wave"
             height={"100%"}
             width={"100%"}
+            sx={{
+              maxWidth: "360px",
+            }}
           />
         </Grid>
         {Array.from({ length: nCards - 1 }).map((_val, idx: number) => (
@@ -48,6 +51,9 @@ const JobCardSkeleton = forwardRef(
               animation="wave"
               height={"100%"}
               width={"100%"}
+              sx={{
+                maxWidth: "360px",
+              }}
             />
           </Grid>
         ))}

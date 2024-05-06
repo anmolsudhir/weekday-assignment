@@ -1,7 +1,7 @@
 import { JobCardSkeleton } from "@/components";
 import { Job } from "@/lib";
 import {
-  jobsSlice,
+  setJobs,
   useAppDispatch,
   useAppSelector,
   useGetJobsQuery,
@@ -36,7 +36,7 @@ function Jobs() {
 
   useEffect(() => {
     if (data) {
-      dispatch(jobsSlice.actions.setJobs([...jobs, ...data.jdList]));
+      dispatch(setJobs([...jobs, ...data.jdList]));
     }
     // eslint-disable-next-line
   }, [data]);

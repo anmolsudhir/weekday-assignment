@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit/react";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 import jobsApi from "./query";
-import jobsSliceReducer from "./jobsSlice";
+import jobsSliceReducer from "./features/jobsSlice";
+import filtersSliceReducer from "./features/filterSlice";
 
 export const store = configureStore({
   reducer: {
     jobs: jobsSliceReducer,
+    filters: filtersSliceReducer,
     [jobsApi.reducerPath]: jobsApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,

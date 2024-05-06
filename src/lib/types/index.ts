@@ -16,9 +16,7 @@ export interface Job {
   logoUrl: string | null;
 }
 
-export interface OptionsType {
-  label: string;
-}
+export type OptionsType = string[] | number[];
 
 export interface InputWrapperProps extends BoxProps {
   focused: boolean;
@@ -41,3 +39,12 @@ export interface InputActionsProps {
   getClearProps: () => React.HTMLAttributes<HTMLButtonElement>;
   getPopupIndicatorProps: () => React.HTMLAttributes<HTMLButtonElement>;
 }
+
+export type FilterIdType =
+  | "role"
+  | "tech-stack"
+  | "experience"
+  | "salary"
+  | "company-name"
+  | "location"
+  | "remote-onsite";

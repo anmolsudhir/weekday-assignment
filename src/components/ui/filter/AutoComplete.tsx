@@ -3,24 +3,28 @@ import {
   UseAutocompleteProps,
 } from "@mui/base/useAutocomplete";
 import { Box, Typography } from "@mui/material";
-import { ReactNode } from "react";
-import { top100Films } from "./Filters";
+import { ReactNode, useEffect } from "react";
 import { Input, InputActions, InputWrapper } from "./Input";
 import { Listbox } from "./Listbox";
+import { FilterIdType, OptionsType } from "@/lib";
 import Tag from "./Tag";
+import { useAppDispatch } from "@/redux";
+import { filterIdToReducerMapping } from "@/config/siteConfig";
 
 export default function AutoComplete(
-  props: UseAutocompleteProps<
-    (typeof top100Films)[number],
-    boolean,
-    false,
-    false
-  >,
+  props: UseAutocompleteProps<OptionsType[number], boolean, false, false> & {
+    lable: string;
+    filterId: FilterIdType;
+  },
 ) {
   const {
     disableClearable = false,
     disabled = false,
     readOnly = false,
+    multiple,
+    lable,
+    options,
+    filterId,
     ...other
   } = props;
 
@@ -40,33 +44,41 @@ export default function AutoComplete(
     focused,
     setAnchorEl,
   } = useAutocomplete({
-    id: "customized-hook-demo",
+    id: "customized-hook",
     ...props,
-    getOptionLabel: (option) => option.title,
+    getOptionLabel: (option) => `${option}`,
   });
 
+  const dispatch = useAppDispatch();
   const noOptionSelected = !disableClearable && !disabled && dirty && !readOnly;
+
+  useEffect(() => {
+    dispatch(filterIdToReducerMapping[filterId](value));
+    // eslint-disable-next-line
+  }, [value]);
 
   return (
     <Box>
       <Box {...getRootProps(other)} ref={setAnchorEl}>
-        {noOptionSelected && (
-          <Label {...getInputLabelProps()}>Customized hook</Label>
+        {noOptionSelected ? (
+          <Label {...getInputLabelProps()}>{lable}</Label>
+        ) : (
+          <Box sx={{ height: "20px", opacity: 0 }} />
         )}
         <InputWrapper focused={focused}>
-          {(value as typeof top100Films)?.map(
-            (option: FilmOptionType, index: number) => (
-              <Tag
-                label={option.title}
-                {...getTagProps({ index })}
-                key={index}
-              />
-            ),
-          )}
+          {multiple
+            ? (value as typeof options)?.map((option, index: number) => (
+                <Tag
+                  label={`${option}`}
+                  {...getTagProps({ index })}
+                  key={index}
+                />
+              ))
+            : null}
           <Input
             disabled={disabled}
             readOnly={readOnly}
-            placeholder={!noOptionSelected ? "Label" : ""}
+            placeholder={!noOptionSelected ? `Select ${lable}` : ""}
             getInputProps={getInputProps}
           />
           <InputActions
@@ -80,14 +92,14 @@ export default function AutoComplete(
       </Box>
       {groupedOptions.length > 0 ? (
         <Listbox {...getListboxProps()}>
-          {(groupedOptions as typeof top100Films).map((option, index) => (
+          {(groupedOptions as typeof options).map((option, index) => (
             <Box
               component={"li"}
-              key={index}
               {...getOptionProps({ option, index })}
+              key={index}
             >
               <Typography my={0.5} variant="body2" fontWeight={200}>
-                {option.title}
+                {option}
               </Typography>
             </Box>
           ))}
@@ -98,10 +110,9 @@ export default function AutoComplete(
 }
 
 function Label({ children }: { children: ReactNode }) {
-  return <label>{children}</label>;
-}
-
-interface FilmOptionType {
-  title: string;
-  year: number;
+  return (
+    <Box component={"label"} fontSize={"13px"} fontWeight={400}>
+      {children}
+    </Box>
+  );
 }

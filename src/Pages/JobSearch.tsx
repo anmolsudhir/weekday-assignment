@@ -4,7 +4,7 @@ import { Jobs, Filters } from "@/components";
 function JobSearchPage() {
   return (
     <Container maxWidth="lg" disableGutters>
-      <Stack spacing={2}>
+      <Stack spacing={6}>
         <Filters />
         <Jobs />
       </Stack>

@@ -1,6 +1,29 @@
-import { store } from "./store";
-import { useGetJobsQuery } from "./query";
-import { jobsSlice } from "./jobsSlice";
+import {
+  setCompanyName,
+  setLocation,
+  setMinBasePay,
+  setMinExperience,
+  setRemoteOrOnsite,
+  setRole,
+  setTechStack,
+} from "./features/filterSlice";
+import { jobsSlice, setJobs } from "./features/jobsSlice";
 import { useAppDispatch, useAppSelector } from "./hooks";
+import { useGetJobsQuery } from "./query";
+import { store } from "./store";
 
-export { store, useGetJobsQuery, jobsSlice, useAppDispatch, useAppSelector };
+export {
+  jobsSlice,
+  setCompanyName,
+  setJobs,
+  setLocation,
+  setMinBasePay,
+  setMinExperience,
+  setRemoteOrOnsite,
+  setRole,
+  setTechStack,
+  store,
+  useAppDispatch,
+  useAppSelector,
+  useGetJobsQuery,
+};
