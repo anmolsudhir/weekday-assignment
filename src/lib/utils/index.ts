@@ -39,6 +39,7 @@ function findSubstring(
 function findRoles(roles: string[], role: string | null): boolean {
   if (!roles.length) return true;
   if (!role) return false;
+  roles = roles.map((role) => role.toLowerCase());
   if (roles.includes(role)) return true;
   return false;
 }
@@ -50,8 +51,9 @@ function findExperience(
 ): boolean {
   if (!experience) return true;
   if (!minExp && !maxExp) return false;
-  if (maxExp && experience < maxExp) return true;
-  if (minExp && experience > minExp) return true;
+  if (minExp && maxExp) return experience >= minExp;
+  if (maxExp && experience >= maxExp) return true;
+  if (minExp && experience >= minExp) return true;
   return false;
 }
 
@@ -62,10 +64,10 @@ function findSalary(
 ) {
   if (!expSalary) return true;
   if (!minJobSalary && maxJobSalary) return false;
-  const intermediate = expSalary[0] + expSalary[1];
+  const intermediate = expSalary.slice(1, -1);
   const expSalaryNum = parseInt(intermediate);
-  if (minJobSalary && minJobSalary > expSalaryNum) return true;
-  if (maxJobSalary && maxJobSalary > expSalaryNum) return true;
+  if (minJobSalary && minJobSalary >= expSalaryNum) return true;
+  if (maxJobSalary && maxJobSalary >= expSalaryNum) return true;
   return false;
 }
 
@@ -73,7 +75,9 @@ export function getFilteredJobs(jobs: Job[], filters: Filters): Job[] {
   const filteredJobs: Job[] = jobs.filter((job: Job) => {
     if (
       findSubstring(job.companyName, filters.companyName) &&
-      findSubstring(job.location, filters.location) &&
+      (filters.remoteOrOnsite === "Remote"
+        ? findSubstring(job.location, "Remote")
+        : findSubstring(job.location, filters.location)) &&
       findRoles(filters.role, job.jobRole) &&
       findExperience(filters.minExperience, job.minExp, job.maxExp) &&
       findSalary(filters.minBasePay, job.minJdSalary, job.maxJdSalary)

@@ -42,13 +42,26 @@ export const techStack: string[] = [
 export const minExperience: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export const minSalary: string[] = [
-  "10L",
-  "20L",
-  "30L",
-  "40L",
-  "50L",
-  "60L",
-  "70L",
+  "$10K",
+  "$20K",
+  "$30K",
+  "$40K",
+  "$50K",
+  "$60K",
+  "$70K",
+  "$80K",
+  "$90K",
+  "$100K",
+  "$110K",
+  "$120K",
+  "$130K",
+  "$140K",
+  "$150K",
+  "$160K",
+  "$170K",
+  "$180K",
+  "$190K",
+  "$200K",
 ];
 
 export const remoteOrOnsite: string[] = ["Remote", "On-Site"];
