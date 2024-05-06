@@ -11,13 +11,22 @@ import {
 
 export const roleList: string[] = [
   "Frontend",
-  "Frontend",
-  "Frontend",
-  "Frontend",
-  "Frontend",
-  "Frontend",
-  "Frontend",
-  "Frontend",
+  "Backend",
+  "Tech Lead",
+  "Fullstack",
+  "IOS",
+  "Flutter",
+  "React Native",
+  "Android",
+  "Tech Lead",
+  "DevOps",
+  "Data Engineer",
+  "Computer Vision",
+  "Nlp",
+  "Deep Learning",
+  "SRE",
+  "Data Infrastructure",
+  // many more
 ];
 
 export const techStack: string[] = [
