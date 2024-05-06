@@ -1,22 +1,28 @@
-import { Box } from "@mui/material";
-import AutoComplete from "./AutoComplete";
-import { useAppSelector } from "@/redux";
-import { useEffect } from "react";
 import {
+  filterId,
   minExperience,
-  roleList,
-  techStack,
   minSalary,
   remoteOrOnsite,
-  filterId,
+  roleList,
+  techStack,
 } from "@/config/siteConfig";
-import { Input } from "@mui/base/Input";
+import { Job, getFilteredJobs } from "@/lib";
+import { setJobs, useAppDispatch, useAppSelector } from "@/redux";
+import { Box } from "@mui/material";
+import { useEffect } from "react";
+import AutoComplete from "./AutoComplete";
+import SearchInput from "./SearchInput";
 
 function Filters() {
   const filters = useAppSelector((state) => state.filters);
+  const jobs = useAppSelector((state) => state.jobs.jobs);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const filteredJobs: Job[] = getFilteredJobs(jobs, filters);
+    dispatch(setJobs(filteredJobs));
     console.log(filters);
+    // eslint-disable-next-line
   }, [filters]);
 
   return (
@@ -48,6 +54,8 @@ function Filters() {
         options={remoteOrOnsite}
         lable="Remote/On-Site"
       />
+      <SearchInput lable="Company" filterId={filterId.companyName} />
+      <SearchInput lable="Location" filterId={filterId.location} />
     </Box>
   );
 }

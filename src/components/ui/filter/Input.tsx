@@ -16,7 +16,9 @@ export function InputWrapper({ focused, children }: InputWrapperProps) {
 }
 
 export function Input(props: InputProp) {
-  const { getInputProps, ...others } = props;
+  const { getInputProps, variant, ...others } = props;
+  if (variant || !getInputProps)
+    return <input {...others} className="autocomplete-input" />;
   return (
     <input {...getInputProps()} {...others} className="autocomplete-input" />
   );

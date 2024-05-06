@@ -1,16 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { type Filters } from "@/lib";
 
-interface FilterState {
-  minExperience: number | null | undefined;
-  companyName: string | null | undefined;
-  location: string | null | undefined;
-  remoteOrOnsite: string;
-  techStack: string[];
-  role: string[];
-  minBasePay: number | null | undefined;
-}
-
-const initialState: FilterState = {
+const initialState: Filters = {
   minExperience: null,
   companyName: null,
   location: null,

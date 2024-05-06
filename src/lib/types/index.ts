@@ -16,6 +16,16 @@ export interface Job {
   logoUrl: string | null;
 }
 
+export interface Filters {
+  minExperience: number | null | undefined;
+  companyName: string | null | undefined;
+  location: string | null | undefined;
+  remoteOrOnsite: string;
+  techStack: string[];
+  role: string[];
+  minBasePay: number | null | undefined;
+}
+
 export type OptionsType = string[] | number[];
 
 export interface InputWrapperProps extends BoxProps {
@@ -27,9 +37,12 @@ export interface InputProp
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  getInputProps: () => React.InputHTMLAttributes<HTMLInputElement> & {
-    ref: React.Ref<HTMLInputElement>;
-  };
+  getInputProps?: () =>
+    | (React.InputHTMLAttributes<HTMLInputElement> & {
+        ref: React.Ref<HTMLInputElement>;
+      })
+    | undefined;
+  variant?: "search" | undefined;
 }
 
 export interface InputActionsProps {
