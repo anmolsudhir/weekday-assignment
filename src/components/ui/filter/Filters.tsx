@@ -9,7 +9,7 @@ import {
 import { Job, getFilteredJobs } from "@/lib";
 import {
   setFilteredJobs,
-  setJobs,
+  setJobsLoading,
   useAppDispatch,
   useAppSelector,
 } from "@/redux";
@@ -24,7 +24,9 @@ function Filters() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(setJobsLoading(true));
     const filteredJobs: Job[] = getFilteredJobs(jobs, filters);
+    dispatch(setJobsLoading(false));
     dispatch(setFilteredJobs(filteredJobs));
     console.log(filters);
     // eslint-disable-next-line

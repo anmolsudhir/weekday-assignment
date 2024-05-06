@@ -16,6 +16,7 @@ function Jobs() {
   const jobs = useAppSelector((state) => state.jobs.jobs);
   const filters = useAppSelector((state) => state.filters);
   const filteredJobs = useAppSelector((state) => state.jobs.filteredJobs);
+  const isJobsLoading = useAppSelector((state) => state.jobs.isJobsLoading);
   const dispatch = useAppDispatch();
   const [offset, setCurrentOffset] = useState<number>(0);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -39,6 +40,10 @@ function Jobs() {
 
   useEffect(() => {
     if (data) {
+      const newFilteredJobs = getFilteredJobs(data.jdList, filters);
+      if (!newFilteredJobs?.length && offset * LIMIT < (data?.total || 960)) {
+        setCurrentOffset((offset) => offset + 1);
+      }
       const filteredJobs = getFilteredJobs([...jobs, ...data.jdList], filters);
       dispatch(setJobs([...jobs, ...data.jdList]));
       dispatch(setFilteredJobs(filteredJobs));
@@ -64,7 +69,7 @@ function Jobs() {
     };
   }, []);
 
-  if (isLoading)
+  if (isLoading || isJobsLoading)
     return (
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={4}>
@@ -92,7 +97,9 @@ function Jobs() {
             <JobCard {...jobData} />
           </Grid>
         ))}
-        <JobCardSkeleton ref={loadMoreRef} nCards={6} />
+        {offset * LIMIT < (data?.total || 960) ? (
+          <JobCardSkeleton ref={loadMoreRef} nCards={6} />
+        ) : null}
       </Grid>
     </Box>
   );

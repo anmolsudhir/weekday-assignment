@@ -4,11 +4,13 @@ import { createSlice } from "@reduxjs/toolkit";
 interface JobsState {
   jobs: Job[];
   filteredJobs: Job[];
+  isJobsLoading: boolean;
 }
 
 const initialState: JobsState = {
   jobs: [],
   filteredJobs: [],
+  isJobsLoading: false,
 };
 
 export const jobsSlice = createSlice({
@@ -21,9 +23,12 @@ export const jobsSlice = createSlice({
     setFilteredJobs: (state, action) => {
       state.filteredJobs = action.payload;
     },
+    setJobsLoading: (state, action) => {
+      state.isJobsLoading = action.payload;
+    },
   },
 });
 
-export const { setJobs, setFilteredJobs } = jobsSlice.actions;
+export const { setJobs, setFilteredJobs, setJobsLoading } = jobsSlice.actions;
 
 export default jobsSlice.reducer;

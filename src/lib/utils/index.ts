@@ -32,7 +32,7 @@ function findSubstring(
 ): boolean {
   if (!subStr?.length) return true;
   if (!mainStr?.length) return false;
-  if (mainStr.includes(subStr)) return true;
+  if (mainStr.toLowerCase().includes(subStr.toLowerCase())) return true;
   return false;
 }
 
