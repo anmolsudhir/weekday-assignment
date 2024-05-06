@@ -7,8 +7,8 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import { Box, Typography, Stack, Divider } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { autocompleteClasses } from "@mui/material/Autocomplete";
-import "./AutoComplete.css";
 import { top100Films } from "./Filters";
+import "./AutoComplete.css";
 import Tag from "./Tag";
 
 const Label = styled("label")`
@@ -90,6 +90,8 @@ export default function AutoComplete(
     getOptionProps,
     groupedOptions,
     getClearProps,
+    getPopupIndicatorProps,
+    popupOpen,
     value,
     dirty,
     focused,
@@ -104,7 +106,7 @@ export default function AutoComplete(
 
   return (
     <Box>
-      <div {...getRootProps(other)}>
+      <Box {...getRootProps(other)}>
         {noOptionSelected && (
           <Label {...getInputLabelProps()}>Customized hook</Label>
         )}
@@ -122,17 +124,12 @@ export default function AutoComplete(
               />
             ),
           )}
-          {!noOptionSelected ? (
-            <Typography
-              variant="body2"
-              fontSize={"12px"}
-              fontWeight={300}
-              color="text.secondary"
-            >
-              Label
-            </Typography>
-          ) : null}
-          <input {...getInputProps()} />
+          <input
+            disabled={disabled}
+            readOnly={readOnly}
+            placeholder={!noOptionSelected ? "Label" : ""}
+            {...getInputProps()}
+          />
           <Stack
             direction={"row"}
             spacing={1}
@@ -143,18 +140,26 @@ export default function AutoComplete(
               <button {...getClearProps()} className="clear-btn">
                 <ClearRoundedIcon
                   fontSize="small"
-                  className="autocomplete-icon-svg"
+                  className={
+                    "autocomplete-icon-svg " + (focused ? "focus" : "")
+                  }
                 />
               </button>
             )}
-            <Divider orientation="vertical" variant="middle" flexItem />
-            <KeyboardArrowDownRoundedIcon
-              fontSize="small"
-              className="autocomplete-icon-svg"
-            />
+            <Divider orientation="vertical" flexItem />
+            <Box
+              {...getPopupIndicatorProps()}
+              className={"popup-btn " + (popupOpen ? "popupOpen" : undefined)}
+              component={"button"}
+            >
+              <KeyboardArrowDownRoundedIcon
+                fontSize="small"
+                className={"autocomplete-icon-svg " + (focused ? "focus" : "")}
+              />
+            </Box>
           </Stack>
         </Box>
-      </div>
+      </Box>
       {groupedOptions.length > 0 ? (
         <Listbox {...getListboxProps()} className="list-box">
           {(groupedOptions as typeof top100Films).map((option, index) => (

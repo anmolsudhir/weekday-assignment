@@ -12,3 +12,7 @@ export interface Job {
   companyName: string | null;
   logoUrl: string | null;
 }
+
+export interface OptionsType {
+  label: string;
+}

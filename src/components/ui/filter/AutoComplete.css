@@ -1,5 +1,4 @@
 .input-wrapper {
-    width: fit-content;
     border: 1px solid #e6e6e6;
     background-color: #fff;
     border-radius: 4px;
@@ -16,18 +15,22 @@
     }
 
     &.focused {
+        box-sizing: border-box;
         border: 2px solid;
         border-color: #589af0;
         box-shadow: none;
     }
 
     & input {
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+        font-weight: 200;
+        width: fit-content;
         background-color: #fff;
         color: rgba(0, 0, 0, 0.85);
-        height: 30px;
-        box-sizing: inherit;
+        height: 36px;
+        box-sizing: border-box;
         cursor: default;
-        width: 0;
         flex-grow: 1;
         border: 0;
         margin: 0;
@@ -53,14 +56,43 @@
     }
 }
 
+.popup-btn {
+    outline: 0;
+    box-shadow: none;
+    border: 0;
+    border-radius: 4px;
+    background-color: transparent;
+    align-self: center;
+    padding: 0 2px;
+
+    &:hover {
+        background-color: ${
+            theme.palette.mode === "dark" ? grey[700] : blue[100]
+        };
+        cursor: pointer;
+    }
+
+    & > svg {
+        transition: transform 0.25s ease-in-out;
+        transform: translateY(2px) rotate(0deg);
+    }
+
+    &.popupOpen > svg {
+        transition: transform 0.25s ease-in-out;
+        transform: translateY(2px) rotate(180deg);
+    }
+}
+
 .autocomplete-icon-svg {
     font-weight: 900;
     color: #e6e6e6;
     padding: 0;
+
     &:hover {
         color: #d4d4d4;
     }
-    &:focus {
-        color: #d4d4d4;
+
+    &.focus {
+        color: gray;
     }
 }
