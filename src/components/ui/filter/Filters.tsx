@@ -7,7 +7,12 @@ import {
   techStack,
 } from "@/config/siteConfig";
 import { Job, getFilteredJobs } from "@/lib";
-import { setJobs, useAppDispatch, useAppSelector } from "@/redux";
+import {
+  setFilteredJobs,
+  setJobs,
+  useAppDispatch,
+  useAppSelector,
+} from "@/redux";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import AutoComplete from "./AutoComplete";
@@ -20,7 +25,7 @@ function Filters() {
 
   useEffect(() => {
     const filteredJobs: Job[] = getFilteredJobs(jobs, filters);
-    dispatch(setJobs(filteredJobs));
+    dispatch(setFilteredJobs(filteredJobs));
     console.log(filters);
     // eslint-disable-next-line
   }, [filters]);

@@ -26,7 +26,60 @@ export function debounceSearch(
   };
 }
 
+function findSubstring(
+  mainStr: string | null,
+  subStr: string | null | undefined,
+): boolean {
+  if (!subStr?.length) return true;
+  if (!mainStr?.length) return false;
+  if (mainStr.includes(subStr)) return true;
+  return false;
+}
+
+function findRoles(roles: string[], role: string | null): boolean {
+  if (!roles.length) return true;
+  if (!role) return false;
+  if (roles.includes(role)) return true;
+  return false;
+}
+
+function findExperience(
+  experience: number | null | undefined,
+  minExp: number | null,
+  maxExp: number | null,
+): boolean {
+  if (!experience) return true;
+  if (!minExp && !maxExp) return false;
+  if (maxExp && experience < maxExp) return true;
+  if (minExp && experience > minExp) return true;
+  return false;
+}
+
+function findSalary(
+  expSalary: string | null | undefined,
+  minJobSalary: number | null,
+  maxJobSalary: number | null,
+) {
+  if (!expSalary) return true;
+  if (!minJobSalary && maxJobSalary) return false;
+  const intermediate = expSalary[0] + expSalary[1];
+  const expSalaryNum = parseInt(intermediate);
+  if (minJobSalary && minJobSalary > expSalaryNum) return true;
+  if (maxJobSalary && maxJobSalary > expSalaryNum) return true;
+  return false;
+}
+
 export function getFilteredJobs(jobs: Job[], filters: Filters): Job[] {
-  jobs.filter((job: Job) => {});
-  return jobs;
+  const filteredJobs: Job[] = jobs.filter((job: Job) => {
+    if (
+      findSubstring(job.companyName, filters.companyName) &&
+      findSubstring(job.location, filters.location) &&
+      findRoles(filters.role, job.jobRole) &&
+      findExperience(filters.minExperience, job.minExp, job.maxExp) &&
+      findSalary(filters.minBasePay, job.minJdSalary, job.maxJdSalary)
+    )
+      return true;
+    return false;
+  });
+  return filteredJobs;
 }

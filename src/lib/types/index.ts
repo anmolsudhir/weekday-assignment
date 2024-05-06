@@ -23,7 +23,7 @@ export interface Filters {
   remoteOrOnsite: string;
   techStack: string[];
   role: string[];
-  minBasePay: number | null | undefined;
+  minBasePay: string | null | undefined;
 }
 
 export type OptionsType = string[] | number[];

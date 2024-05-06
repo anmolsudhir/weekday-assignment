@@ -1,6 +1,7 @@
 import { JobCardSkeleton } from "@/components";
-import { Job } from "@/lib";
+import { Job, getFilteredJobs } from "@/lib";
 import {
+  setFilteredJobs,
   setJobs,
   useAppDispatch,
   useAppSelector,
@@ -13,6 +14,8 @@ import JobCard from "./JobCard";
 function Jobs() {
   const LIMIT = 12;
   const jobs = useAppSelector((state) => state.jobs.jobs);
+  const filters = useAppSelector((state) => state.filters);
+  const filteredJobs = useAppSelector((state) => state.jobs.filteredJobs);
   const dispatch = useAppDispatch();
   const [offset, setCurrentOffset] = useState<number>(0);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -36,7 +39,9 @@ function Jobs() {
 
   useEffect(() => {
     if (data) {
+      const filteredJobs = getFilteredJobs([...jobs, ...data.jdList], filters);
       dispatch(setJobs([...jobs, ...data.jdList]));
+      dispatch(setFilteredJobs(filteredJobs));
     }
     // eslint-disable-next-line
   }, [data]);
@@ -71,7 +76,7 @@ function Jobs() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4}>
-        {jobs.map((jobData: Job, idx: number) => (
+        {filteredJobs.map((jobData: Job, idx: number) => (
           <Grid
             sx={{
               display: "flex",

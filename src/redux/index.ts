@@ -7,7 +7,7 @@ import {
   setRole,
   setTechStack,
 } from "./features/filterSlice";
-import { jobsSlice, setJobs } from "./features/jobsSlice";
+import { jobsSlice, setJobs, setFilteredJobs } from "./features/jobsSlice";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { useGetJobsQuery } from "./query";
 import { store } from "./store";
@@ -16,6 +16,7 @@ export {
   jobsSlice,
   setCompanyName,
   setJobs,
+  setFilteredJobs,
   setLocation,
   setMinBasePay,
   setMinExperience,
