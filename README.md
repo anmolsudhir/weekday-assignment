@@ -1,30 +1,21 @@
-# React + TypeScript + Vite
+# Weekday Internship Assignment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This assignment is developed using Reactjs, Redux, RTK Query and MaterialUI.
 
-Currently, two official plugins are available:
+## Run the Application
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+_Assuming that `git`, `nodejs` and `pnpm` are installed in your device. If not please install both of these._
 
-## Expanding the ESLint configuration
+To run the app on development server, follow the instructions below :
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- MacOS/Linux :
 
-- Configure the top-level `parserOptions` property like this:
+  - Open terminal and run `git clone git@github.com:anmolsudhir/weekday-assignment.git`
+  - Next, change current working directory to project directoryusing the command `cd path_the_cloned_project`
+  - Copy and paste `sh runme.sh` on the terminal and press enter.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Windows :
+  _Assuming Execution Policy has already been Set on your windows powershell. If not please set execution policy._
+  - Open Windows powershell and run the command `git@github.com:anmolsudhir/weekday-assignment.git`
+  - Next, change current working directory to project directoryusing the command `cd path_the_cloned_project`
+  - Copy and paste `.\runme.ps1` on Windows Powershell and press enter.
