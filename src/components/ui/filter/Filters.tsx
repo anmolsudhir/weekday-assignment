@@ -24,11 +24,13 @@ function Filters() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setJobsLoading(true));
-    const filteredJobs: Job[] = getFilteredJobs(jobs, filters);
-    dispatch(setJobsLoading(false));
-    dispatch(setFilteredJobs(filteredJobs));
-    console.log(filters);
+    async function runFilterTask() {
+      dispatch(setJobsLoading(true));
+      const filteredJobs: Job[] = getFilteredJobs(jobs, filters);
+      dispatch(setJobsLoading(false));
+      dispatch(setFilteredJobs(filteredJobs));
+    }
+    runFilterTask();
     // eslint-disable-next-line
   }, [filters]);
 

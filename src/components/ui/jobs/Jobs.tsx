@@ -8,7 +8,8 @@ import {
   useGetJobsQuery,
 } from "@/redux";
 import { Box, Grid } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import JobCard from "./JobCard";
 
 function Jobs() {
@@ -19,7 +20,7 @@ function Jobs() {
   const isJobsLoading = useAppSelector((state) => state.jobs.isJobsLoading);
   const dispatch = useAppDispatch();
   const [offset, setCurrentOffset] = useState<number>(0);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const { ref, inView, entry } = useInView({});
   const { data, isLoading } = useGetJobsQuery(
     {
       offset,
@@ -28,46 +29,35 @@ function Jobs() {
     { refetchOnMountOrArgChange: true },
   );
 
-  const handleIntersection = (e: IntersectionObserverEntry[]) => {
-    const { target } = e[0];
-    if (
-      loadMoreRef.current &&
-      target.scrollHeight - target.scrollTop === target.clientHeight
-    ) {
-      setCurrentOffset((prevOffset) => prevOffset + 1);
-    }
-  };
-
   useEffect(() => {
-    if (data) {
-      const newFilteredJobs = getFilteredJobs(data.jdList, filters);
-      if (!newFilteredJobs?.length && offset * LIMIT < (data?.total || 960)) {
-        setCurrentOffset((offset) => offset + 1);
+    async function runJobManagementTask() {
+      if (data) {
+        const newFilteredJobs = getFilteredJobs(data.jdList, filters);
+        if (
+          !newFilteredJobs?.length ||
+          (inView &&
+            newFilteredJobs?.length < 6 &&
+            offset * LIMIT < (data?.total || 960))
+        ) {
+          setCurrentOffset((offset) => offset + 1);
+        }
+        const filteredJobs = getFilteredJobs(
+          [...jobs, ...data.jdList],
+          filters,
+        );
+        dispatch(setJobs([...jobs, ...data.jdList]));
+        dispatch(setFilteredJobs(filteredJobs));
       }
-      const filteredJobs = getFilteredJobs([...jobs, ...data.jdList], filters);
-      dispatch(setJobs([...jobs, ...data.jdList]));
-      dispatch(setFilteredJobs(filteredJobs));
     }
+
+    runJobManagementTask();
     // eslint-disable-next-line
   }, [data]);
 
   useEffect(() => {
-    const intervalId = setTimeout(() => {
-      if (loadMoreRef.current) {
-        const observer = new IntersectionObserver(handleIntersection, {
-          threshold: 0.25,
-        });
-        observer.observe(loadMoreRef.current);
-        return () => {
-          observer.disconnect();
-        };
-      }
-    }, 1000);
-
-    return () => {
-      clearTimeout(intervalId);
-    };
-  }, []);
+    if (inView && entry?.isIntersecting)
+      setCurrentOffset((prevOffset) => prevOffset + 1);
+  }, [inView, entry]);
 
   if (isLoading || isJobsLoading)
     return (
@@ -98,7 +88,7 @@ function Jobs() {
           </Grid>
         ))}
         {offset * LIMIT < (data?.total || 960) ? (
-          <JobCardSkeleton ref={loadMoreRef} nCards={6} />
+          <JobCardSkeleton ref={ref} nCards={6} />
         ) : null}
       </Grid>
     </Box>
